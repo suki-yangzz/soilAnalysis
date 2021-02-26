@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Container} from 'reactstrap';
-import {Button, Modal} from "react-bootstrap";
-import {Map} from "@esri/react-arcgis";
-import DataLayer from './DataLayer';
+import {Container, Button, Modal} from "react-bootstrap";
+import {WebMap} from "@esri/react-arcgis";
+import DataLayer from '../common/DataLayer';
 import CSVTable from '../common/CSVTable'
 import {CSVLink} from "react-csv";
 import ReactFileReader from 'react-file-reader';
@@ -93,18 +92,21 @@ export default class DataAnalysis extends Component {
                     </Modal.Footer>
                 </Modal>
                 {/*<Button variant="primary m-5" onClick={this.handleModelShow}*/}
-                        {/*style={{position: 'fixed', top: 100, left: -35, zIndex: 1}}>*/}
-                    {/*Manage Data*/}
+                {/*style={{position: 'fixed', top: 100, left: -35, zIndex: 1}}>*/}
+                {/*Manage Data*/}
                 {/*</Button>*/}
                 <Container fluid style={{margin: 0, padding: 0}}>
-                    <Map className="full-screen-map" onLoad={this.handleMapLoad}
-                         style={{width: '100vw', height: '100vh'}}
+                    <WebMap id="aaafb684f0e64b5bb62fdf4ff525d209" className="full-screen-map"
+                            onLoad={this.handleMapLoad}
+                            style={{height: '95vh'}}
+                        // style={{width: '100vw', height: '100vh'}}
+                        // https://www.esri.com/arcgis-blog/products/arcgis-online/announcements/whats-new-in-esri-vector-basemaps-february-2019/
                         // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html
-                         mapProperties={{basemap: 'national-geographic', ground: "world-elevation"}}
-                         viewProperties={{
-                             center: [105.8756, 34.1749], // longitude, latitude
-                             zoom: 4
-                         }}>
+                        // mapProperties={{basemap: 'national-geographic', ground: "world-elevation"}}
+                            viewProperties={{
+                                center: [105.8756, 36.1749], // longitude, latitude
+                                zoom: 4
+                            }}>
                         <DataLayer
                             featureLayerProperties={{
                                 // "https://developers.arcgis.com/javascript/latest/sample-code/layers-csv/live/earthquakes.csv"
@@ -112,7 +114,7 @@ export default class DataAnalysis extends Component {
                             }}
                         >
                         </DataLayer>
-                    </Map>
+                    </WebMap>
                 </Container>
             </div>
         );

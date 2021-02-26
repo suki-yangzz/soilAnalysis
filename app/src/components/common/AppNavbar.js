@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Nav, Navbar, NavbarBrand} from 'reactstrap';
-import {Dropdown} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Button, Nav, Navbar, NavbarBrand, NavItem, Dropdown} from 'react-bootstrap';
 
 export default class AppNavbar extends Component {
     constructor(props) {
@@ -29,21 +27,9 @@ export default class AppNavbar extends Component {
             </div> :
             <Button color="primary" onClick={this.login}>Login</Button>;
 
-        return <Navbar color="dark" dark expand="md">
-            {/*<NavbarBrand tag={Link} to="/">Home {message}</NavbarBrand>*/}
-            <NavbarBrand tag={Link} to="/">葫芦岛市龙港区智慧环境管理系统</NavbarBrand>
+        return <Navbar bg="dark" variant="dark" expand="md">
+            <NavbarBrand href="/">葫芦岛市龙港区智慧环境管理系统 {message}</NavbarBrand>
             <Nav className="ml-auto" navbar>
-                {/*<Dropdown isOpen={this.state.dropdown} toggle={this.dropdownToggle}>*/}
-                {/*<DropdownToggle color="primary" nav caret>*/}
-                {/*Data Analysis*/}
-                {/*</DropdownToggle>*/}
-                {/*<DropdownMenu>*/}
-                {/*<DropdownItem>Manage Data</DropdownItem>*/}
-                {/*<DropdownItem>Action1</DropdownItem>*/}
-                {/*<DropdownItem>Action2</DropdownItem>*/}
-                {/*<DropdownItem>Action3</DropdownItem>*/}
-                {/*</DropdownMenu>*/}
-                {/*</Dropdown>*/}
                 <Dropdown isOpen={this.state.dropdown} toggle={this.dropdownToggle} style={{'margin-right': 20}}>
                     <Dropdown.Toggle color="secondary" nav caret className="btn-secondary">
                         区域概况
@@ -80,7 +66,7 @@ export default class AppNavbar extends Component {
                         <Dropdown.Item>质量月报（近1年）</Dropdown.Item>
                         <Dropdown.Item>质量年报（近5年）</Dropdown.Item>
                         <Dropdown.Header>土壤环境</Dropdown.Header>
-                        <Dropdown.Item>农田土壤环境质量</Dropdown.Item>
+                        <Dropdown.Item href="/EnvSoil">农田土壤环境质量</Dropdown.Item>
                         <Dropdown.Item>场地土壤风险等级</Dropdown.Item>
                         <Dropdown.Item>例行监测调查结果</Dropdown.Item>
                         <Dropdown.Header>固废危废</Dropdown.Header>
@@ -128,7 +114,7 @@ export default class AppNavbar extends Component {
                         <Dropdown.Item>长期环境管理</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                {/*<NavItem>{button}</NavItem>*/}
+                <NavItem>{button}</NavItem>
             </Nav>
         </Navbar>;
 

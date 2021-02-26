@@ -31,6 +31,11 @@ To run the client, cd into the `app` folder and run:
 yarn && yarn start
 ```
 
+To deploy production build, run:
+```bash
+mvn clean install -Pprod
+```
+
 ## Links
 
 This example uses the following open source libraries:

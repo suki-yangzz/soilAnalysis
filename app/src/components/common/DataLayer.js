@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { loadModules } from 'esri-loader';
+import {useEffect, useState} from 'react';
+import {loadModules} from 'esri-loader';
 
 const DataLayer = (props) => {
     const [csvLayer, setLayer] = useState(null);
@@ -16,7 +16,7 @@ const DataLayer = (props) => {
         return function cleanup() {
             props.map.remove(csvLayer);
         }
-    }, [ props ]);
+    }, [props]);
 
     return null;
 };
