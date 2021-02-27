@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {CookiesProvider, withCookies} from 'react-cookie';
 import AppNavbar from "./components/common/AppNavbar";
 import EnvironmentSoil from "./components/layout/environment/EnvironmentSoil";
+import GeoStatistics from "./components/layout/GeoStatistics";
 
 class App extends Component {
     state = {
@@ -63,6 +64,7 @@ class App extends Component {
                         <Route path='/' exact={true} component={Home}/>
                         <Route path='/Home' component={Home}/>
                         <Route path='/EnvSoil' component={EnvironmentSoil}/>
+                        <Route path='/GeoStatic' component={GeoStatistics}/>
                         {/*<Route path='/groups' exact={true} component={GroupList}/>*/}
                         {/*<Route path='/groups/:id' component={GroupEdit}/>*/}
                     </Switch>
