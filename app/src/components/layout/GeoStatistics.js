@@ -33,9 +33,10 @@ export default class GeoStatistics extends Component {
             "esri/geometry/Point",
             "esri/tasks/support/LinearUnit",
             "esri/tasks/support/FeatureSet",
-            "esri/widgets/LayerList"], options)
+            "esri/widgets/LayerList",
+            "esri/renderers/support/jsonUtils"], options)
             .then(([WebMap, MapView, FeatureLayer, Legend, Expand, esriConfig, Map, request, Field, Graphic,
-                       Geoprocessor, SceneView, GraphicsLayer, Point, LinearUnit, FeatureSet, LayerList]) => {
+                       Geoprocessor, SceneView, GraphicsLayer, Point, LinearUnit, FeatureSet, LayerList, jsonUtils]) => {
                 const fileForm = document.getElementById("mainWindow");
                 const gpUrl = "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Elevation/ESRI_Elevation_World/GPServer/Viewshed";
 
@@ -139,14 +140,17 @@ export default class GeoStatistics extends Component {
                         sourceGraphics = sourceGraphics.concat(graphics);
                         let featureLayer = new FeatureLayer({
                             objectIdField: "FID",
+                            title: layer.layerDefinition.name,
                             source: graphics,
                             fields: layer.layerDefinition.fields.map(function (field) {
                                 return Field.fromJSON(field);
-                            })
+                            }),
+                            renderer: jsonUtils.fromJSON(layer.layerDefinition.drawingInfo.renderer)
                         });
                         return featureLayer;
                         // associate the feature with the popup on click to enable highlight and zoom to
                     });
+                    map.removeAll();
                     map.addMany(layers);
                     view.goTo(sourceGraphics)
                         .catch(function (error) {
@@ -154,15 +158,21 @@ export default class GeoStatistics extends Component {
                                 console.error(error);
                             }
                         });
-                    let layerList = new LayerList({
-                        view: view
-                    });
 
                     // Adds widget below other elements in the top left corner of the view
-                    view.ui.add(layerList, {
-                        position: "top-left"
-                    });
-
+                    view.ui.add(new LayerList({
+                        view: view,
+                        listItemCreatedFunction: function(event) {
+                            const item = event.item;
+                            if (item.layer.type != "group") {
+                                // don't show legend twice
+                                item.panel = {
+                                    content: "legend",
+                                    open: true
+                                };
+                            }
+                        }
+                    }), "top-left");
 
                     document.getElementById('upload-status').innerHTML = "";
                 }
@@ -196,6 +206,7 @@ export default class GeoStatistics extends Component {
                     // autocasts as new SpatialReference()
                     wkid: 102100
                 };
+
                 // view.on("click", computeViewshed); todo
 
                 function computeViewshed(event) {
@@ -234,7 +245,7 @@ export default class GeoStatistics extends Component {
                     var resultFeatures = result.results[0].value.features;
 
                     // Assign each resulting graphic a symbol
-                    var viewshedGraphics = resultFeatures.map(function(feature) {
+                    var viewshedGraphics = resultFeatures.map(function (feature) {
                         feature.symbol = fillSymbol;
                         return feature;
                     });
@@ -254,12 +265,13 @@ export default class GeoStatistics extends Component {
                         target: viewshedGraphics,
                         tilt: 0
                     })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             if (error.name != "AbortError") {
                                 console.error(error);
                             }
                         });
                 }
+
                 // end viewshed analysis
             })
     }
@@ -276,9 +288,10 @@ export default class GeoStatistics extends Component {
                                 </p>
                                 <p>Add a zipped shapefile to the map.</p>
                                 <p>Visit the <a target='_blank'
-                                       href="https://doc.arcgis.com/en/arcgis-online/reference/shapefiles.htm">Shapefiles</a> help
+                                                href="https://doc.arcgis.com/en/arcgis-online/reference/shapefiles.htm">Shapefiles</a> help
                                     topic for information and limitations.</p>
-                                <form encType="multipart/form-data" method="post" id="uploadForm" style={{display: 'block', padding: 5}}>
+                                <form encType="multipart/form-data" method="post" id="uploadForm"
+                                      style={{display: 'block', padding: 5}}>
                                     <div className="field">
                                         <label className="file-upload">
                                             <span><strong>Add File</strong></span>
